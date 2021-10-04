@@ -87,10 +87,11 @@ router.put('/:contactId', async (req, res, next) => {
 
 router.put('/:contactId/favorite', async (req, res, next) => {
   try {
-    const check = req.body.favorite
-    if (check === true || check === false) {
+    const favorite = req.body.favorite
+    if (favorite === true || favorite === false) {
       const { contactId } = req.params
-      const result = await Contact.findByIdAndUpdate({ _id: contactId }, req.body, { new: true })
+      const result = await Contact.findByIdAndUpdate({ _id: contactId }, { favorite }, { new: true })
+      console.log(result)
       if (!result) {
         throw new NotFound(`Контакта с id=${contactId} не найдено`)
       }
