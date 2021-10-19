@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose')
 const Joi = require('joi')
+
 const contactSchema = Schema({
   name: {
     type: String,
@@ -15,9 +16,13 @@ const contactSchema = Schema({
     type: Boolean,
     default: false,
   },
-})
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+  }
+}, { versionKey: false, timestamps: true })
 
-const joiShema = Joi.object({
+const joiSchema = Joi.object({
   name: Joi.string().required(),
   email: Joi.string().email({ minDomainSegments: 2 }),
   phone: Joi.string(),
@@ -28,5 +33,5 @@ const Contact = model('contact', contactSchema)
 
 module.exports = {
   Contact,
-  joiShema
+  joiSchema
 }
