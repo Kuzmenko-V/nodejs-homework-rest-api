@@ -8,11 +8,14 @@ const login = async (req, res) => {
   const { email, password } = req.body
   const user = await User.findOne({ email })
   if (!user) {
-    throw new Unauthorized('Неправельная почта или пароль!')
+    throw new Unauthorized('Неправельная почта или пароль, или почта не верифицирована!')
   }
   const isCorrectPassword = bcrypt.compareSync(password, user.password)
   if (!isCorrectPassword) {
-    throw new Unauthorized('Неправельная почта или пароль!')
+    throw new Unauthorized('Неправельная почта или пароль, или почта не верифицирована!')
+  }
+  if (!user.verify) {
+    throw new Unauthorized('Неправельная почта или пароль, или почта не верифицирована!')
   }
   const payload = {
     id: user._id
